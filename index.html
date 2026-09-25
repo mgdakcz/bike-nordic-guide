@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Planer tras Rower & Nordic Walking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --bg:#EEF2F0; --surface:#FFFFFF; --surface-2:#E3EAE7; --ink:#15252A; --muted:#566A6C; --line:#CAD6D2;
+  --pine:#23574A; --sea:#2A6A8A; --heather:#8A4F86; --heather-soft:#F1E4EF;
+  --easy:#2F7A4F; --mid:#A26A10; --hard:#B23A36;
+  --easy-bg:#E1F0E6; --mid-bg:#F7EBD2; --hard-bg:#F6DEDC;
+  --shadow:0 1px 2px rgba(21,37,42,.06),0 6px 20px rgba(21,37,42,.07);
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Figtree",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#0F1A1C; --surface:#172528; --surface-2:#1F3134; --ink:#E4EDEA; --muted:#98ACAA; --line:#2B3F42;
+  --pine:#6FBFA5; --sea:#78B6D6; --heather:#D39BCD; --heather-soft:#35243A;
+  --easy:#7CCB97; --mid:#E3B55A; --hard:#EE8A83;
+  --easy-bg:#1D3527; --mid-bg:#3A2E15; --hard-bg:#3E2121;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F1A1C; --surface:#172528; --surface-2:#1F3134; --ink:#E4EDEA; --muted:#98ACAA; --line:#2B3F42;
+  --pine:#6FBFA5; --sea:#78B6D6; --heather:#D39BCD; --heather-soft:#35243A;
+  --easy:#7CCB97; --mid:#E3B55A; --hard:#EE8A83;
+  --easy-bg:#1D3527; --mid-bg:#3A2E15; --hard-bg:#3E2121;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 20px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+img{max-width:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding-inline:20px;padding-block:28px 96px}
+header.top{display:grid;gap:18px;grid-template-columns:minmax(0,1fr) auto;align-items:end;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--pine);font-weight:700}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,64px);line-height:1;margin:6px 0 10px;text-wrap:balance}
+h1 em{color:var(--heather)}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+.lede b{color:var(--ink);font-weight:600}
+.counts{display:flex;gap:22px}
+.count{display:grid}
+.count strong{font-family:var(--serif);font-size:40px;font-weight:400;line-height:1;font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+
+.filters{display:grid;gap:12px;padding-block:18px;border-bottom:1px solid var(--line)}
+.frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.flabel{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;min-width:112px}
+.chip{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:500 14px/1 var(--sans);padding:9px 13px;border-radius:999px;cursor:pointer}
+.chip:hover{border-color:var(--pine)}
+.chip[aria-pressed="true"]{background:var(--pine);border-color:var(--pine);color:var(--bg)}
+.chip:focus-visible,.btn:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--heather);outline-offset:2px}
+.reset{background:none;border:0;color:var(--sea);font:600 14px var(--sans);cursor:pointer;padding:6px 2px;text-decoration:underline;text-underline-offset:3px}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;padding-top:24px;align-items:start}
+.resultbar{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.resultbar h2{font-family:var(--serif);font-weight:400;font-size:28px;margin:0}
+.resultbar p{margin:0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:18px}
+.empty{padding:40px 20px;text-align:center;color:var(--muted);background:var(--surface);border-radius:14px;border:1px dashed var(--line)}
+
+.card{background:var(--surface);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.photo{position:relative;aspect-ratio:3/2;max-width:100%;background:var(--surface-2)}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
+.tag{position:absolute;left:10px;top:10px;background:rgba(15,26,28,.72);color:#fff;font-size:12px;font-weight:600;padding:5px 9px;border-radius:999px;letter-spacing:.02em;backdrop-filter:blur(4px)}
+.body{padding:16px 16px 14px;display:flex;flex-direction:column;gap:12px;flex:1}
+.card h3{font-family:var(--serif);font-weight:400;font-size:25px;line-height:1.1;margin:0;text-wrap:balance}
+.stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-variant-numeric:tabular-nums}
+.diff{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px}
+.d1{background:var(--easy-bg);color:var(--easy)}.d2{background:var(--mid-bg);color:var(--mid)}.d3{background:var(--hard-bg);color:var(--hard)}
+.stat{font-size:14px;color:var(--muted)}
+.stat b{color:var(--ink);font-weight:600}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:4px 12px;font-size:13px;margin:0;padding:0;list-style:none}
+.facts li{display:flex;gap:6px;align-items:baseline}
+.yes::before,.no::before{font-weight:700;width:12px;flex:none}
+.yes::before{content:"✓";color:var(--easy)}.no::before{content:"✕";color:var(--hard)}
+.no{color:var(--muted)}
+.why{margin:0;font-size:14px}
+details.more summary{cursor:pointer;color:var(--sea);font-weight:600;font-size:14px}
+details.more[open] summary{margin-bottom:8px}
+.tip{background:var(--heather-soft);border-radius:10px;padding:10px 12px;font-size:14px;margin:0}
+.tip b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--heather);margin-bottom:2px}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
+.thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block}
+.actions{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.btn{appearance:none;border:1px solid var(--pine);background:transparent;color:var(--pine);font:600 14px var(--sans);padding:10px 12px;border-radius:9px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1;text-align:center}
+.btn.primary{background:var(--pine);color:var(--bg)}
+.btn.primary.added{background:var(--surface-2);color:var(--pine);border-color:var(--surface-2)}
+.btn.ghost{border-color:var(--line);color:var(--muted);cursor:default}
+
+aside.plan{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);background:var(--surface);border-radius:14px;box-shadow:var(--shadow);padding:18px;display:grid;gap:14px;max-height:calc(100vh - 32px);overflow:auto}
+.plan h2{font-family:var(--serif);font-weight:400;font-size:30px;margin:0;line-height:1}
+.plan .sub{color:var(--muted);font-size:13px;margin:4px 0 0}
+.stay{display:flex;align-items:center;gap:10px;font-size:14px}
+select{font:500 14px var(--sans);padding:7px 8px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.day{border-top:1px solid var(--line);padding-top:10px;display:grid;gap:8px}
+.dayhead{display:flex;justify-content:space-between;align-items:baseline}
+.dayhead h4{margin:0;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--pine)}
+.dayhead span{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pitem{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:6px;align-items:center;font-size:14px}
+.pitem .nm{overflow-wrap:anywhere}
+.pitem .nm small{display:block;color:var(--muted);font-size:12px}
+.pitem select{padding:4px 6px;font-size:13px}
+.x{background:none;border:0;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 6px;border-radius:6px}
+.x:hover{color:var(--hard)}
+.dayempty{font-size:13px;color:var(--muted);margin:0}
+.total{display:flex;justify-content:space-between;background:var(--surface-2);border-radius:10px;padding:10px 12px;font-size:14px;font-variant-numeric:tabular-nums}
+.planactions{display:flex;gap:8px;flex-wrap:wrap}
+.status{font-size:13px;color:var(--easy);min-height:1.2em;margin:0}
+.planempty{color:var(--muted);font-size:14px;margin:0}
+textarea#copyfallback{width:100%;min-height:120px;font:13px/1.4 var(--sans);border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:8px}
+
+.fab{display:none}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+
+@media (max-width:900px){
+  .layout{grid-template-columns:1fr}
+  aside.plan{position:static;max-height:none}
+  .fab{display:flex;position:fixed;left:16px;right:16px;bottom:calc(12px + env(safe-area-inset-bottom,0px));justify-content:center;background:var(--pine);color:var(--bg);border:0;border-radius:999px;padding:13px;font:700 15px var(--sans);box-shadow:var(--shadow);z-index:5;cursor:pointer}
+}
+@media (max-width:560px){
+  header.top{grid-template-columns:1fr}
+  .flabel{min-width:100%}
+  .wrap{padding-inline:16px}
+}
+@media (prefers-reduced-motion:no-preference){.card{transition:transform .15s ease}.card:hover{transform:translateY(-2px)}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Rowerownia · poziom −1</div>
+      <h1>Rowerem i z kijkami <em>po Kaszubskim wybrzeżu</em></h1>
+      <p class="lede"><span id="nAll">16</span> sprawdzonych tras z naszego przewodnika. Rowery i kije do Nordic Walking zabierzesz z <b>rowerowni na poziomie −1</b>, zaraz obok hali garażowej. Wybierz, co pasuje do Twojej ekipy, i ułóż plan na każdy dzień urlopu.</p>
+    </div>
+    <div class="counts" aria-label="Liczba tras">
+      <div class="count"><strong id="nBike">–</strong><span>tras rowerowych</span></div>
+      <div class="count"><strong id="nNw">–</strong><span>tras z kijkami</span></div>
+    </div>
+  </header>
+
+  <section class="filters" aria-label="Filtry">
+    <div class="frow" role="group" aria-label="Aktywność"><span class="flabel">Aktywność</span>
+      <button class="chip" id="f-type-all" data-f="type" data-v="all" aria-pressed="true">Wszystkie</button>
+      <button class="chip" id="f-type-bike" data-f="type" data-v="bike" aria-pressed="false">Rower</button>
+      <button class="chip" id="f-type-nw" data-f="type" data-v="nw" aria-pressed="false">Nordic Walking</button>
+    </div>
+    <div class="frow" role="group" aria-label="Odległość"><span class="flabel">Gdzie</span>
+      <button class="chip" id="f-zone-all" data-f="zone" data-v="all" aria-pressed="true">Obojętnie</button>
+      <button class="chip" id="f-zone-near" data-f="zone" data-v="near" aria-pressed="false">Blisko hotelu</button>
+      <button class="chip" id="f-zone-far" data-f="zone" data-v="far" aria-pressed="false">Dalej / z dojazdem</button>
+    </div>
+    <div class="frow" role="group" aria-label="Poziom trudności"><span class="flabel">Trudność</span>
+      <button class="chip" id="f-diff-all" data-f="diff" data-v="all" aria-pressed="true">Każda</button>
+      <button class="chip" id="f-diff-1" data-f="diff" data-v="1" aria-pressed="false">Łatwa</button>
+      <button class="chip" id="f-diff-2" data-f="diff" data-v="2" aria-pressed="false">Średnia</button>
+      <button class="chip" id="f-diff-3" data-f="diff" data-v="3" aria-pressed="false">Trudna</button>
+    </div>
+    <div class="frow" role="group" aria-label="Z kim"><span class="flabel">Potrzebuję</span>
+      <button class="chip" id="f-kids" data-t="kids" aria-pressed="false">Dla dzieci</button>
+      <button class="chip" id="f-gondola" data-t="gondola" aria-pressed="false">Wózek gondola</button>
+      <button class="chip" id="f-runner" data-t="runner" aria-pressed="false">Wózek biegowy / rowerowy</button>
+      <button class="chip" id="f-food" data-t="food" aria-pressed="false">Jedzenie na trasie</button>
+      <button class="reset" id="f-reset" type="button">Wyczyść filtry</button>
+    </div>
+  </section>
+
+  <div class="layout">
+    <main>
+      <div class="resultbar"><h2 id="resTitle">Wszystkie trasy</h2><p id="resCount"></p></div>
+      <div class="grid" id="grid"></div>
+    </main>
+    <aside class="plan" id="plan" aria-label="Mój plan">
+      <div>
+        <h2>Mój plan</h2>
+        <p class="sub">Zapisuje się w tej przeglądarce.</p>
+      </div>
+      <label class="stay" for="days">Liczba dni aktywności
+        <select id="days"></select>
+      </label>
+      <div id="planBody"></div>
+      <div class="total" id="total" hidden></div>
+      <div class="planactions" id="planActions" hidden>
+        <button class="btn primary" id="copyPlan" type="button">Kopiuj plan</button>
+        <button class="btn" id="clearPlan" type="button">Wyczyść</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+      <textarea id="copyfallback" hidden readonly aria-label="Plan do skopiowania"></textarea>
+    </aside>
+  </div>
+  <footer>Czasy przejścia i przejazdu to średnie w jedną stronę. Mapy tras w aplikacji Komoot pokazują dokładny przebieg, dystans i przewyższenia.</footer>
+</div>
+<button class="fab" id="fab" type="button">Mój plan</button>
+
+<script src="trasy.js"></script>
+<script>
+// Dane tras są w pliku trasy.js – tam edytuj treść.
+const DMAP={latwa:1,srednia:2,trudna:3};
+const ROUTES = TRASY.map(t=>({id:t.id,type:t.typ==="rower"?"bike":"nw",zone:t.gdzie==="blisko"?"near":"far",name:t.nazwa,
+  diffs:t.trudnosc.map(d=>DMAP[d]),km:+t.km,time:t.czas,min:+t.minuty,gondola:t.gondola,gondolaNote:t.gondolaUwagi,
+  runner:t.wozekBiegowy,kids:t.dzieci,kidsAge:t.dzieciOdLat,food:t.jedzenie,why:t.opis,tip:t.wskazowka,map:t.mapa,
+  photos:t.zdjecia.map(f=>"zdjecia/"+f)}));
+const KOMOOT = u => u || null;
+const DIFF = {1:"Łatwa",2:"Średnia",3:"Trudna"};
+const state = {type:"all",zone:"all",diff:"all",kids:false,gondola:false,runner:false,food:false};
+let plan = {days:3, items:[]};
+try{const s=JSON.parse(localStorage.getItem("planer-tras")||"null"); if(s&&Array.isArray(s.items)) plan=s;}catch(e){}
+function save(){try{localStorage.setItem("planer-tras",JSON.stringify(plan));}catch(e){}}
+const byId = id => ROUTES.find(r=>r.id===id);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+function matches(r){
+  if(state.type!=="all" && r.type!==state.type) return false;
+  if(state.zone!=="all" && r.zone!==state.zone) return false;
+  if(state.diff!=="all" && !r.diffs.includes(+state.diff)) return false;
+  if(state.kids && !r.kids) return false;
+  if(state.gondola && !r.gondola) return false;
+  if(state.runner && !r.runner) return false;
+  if(state.food && !r.food) return false;
+  return true;
+}
+function fact(ok,label,note){return `<li class="${ok?"yes":"no"}">${esc(label)}${note?` <small>(${esc(note)})</small>`:""}</li>`;}
+function card(r){
+  const inPlan = plan.items.some(i=>i.id===r.id);
+  const p = r.photos;
+  const map = KOMOOT(r.map);
+  const zoneLbl = r.type==="bike" ? (r.zone==="near"?"Rower · do 10 km":"Rower · do 50 km") : (r.zone==="near"?"Nordic Walking · na miejscu":"Nordic Walking · z dojazdem");
+  const d = r.diffs.map(x=>`<span class="diff d${x}">${DIFF[x]}</span>`).join("");
+  return `<article class="card">
+    <div class="photo"><img src="${p[0]}" alt="${esc(r.name)}" loading="lazy"><span class="tag">${zoneLbl}</span></div>
+    <div class="body">
+      <h3>${esc(r.name)}</h3>
+      <div class="stats">${d}<span class="stat"><b>${String(r.km).replace(".",",")} km</b></span><span class="stat">· ${esc(r.time)}</span></div>
+      <ul class="facts">
+        ${fact(r.kids, r.kidsAge?`Dzieci od ${r.kidsAge} lat`:"Dla dzieci")}
+        ${fact(r.food,"Jedzenie na trasie")}
+        ${fact(r.gondola,"Wózek gondola",r.gondolaNote)}
+        ${fact(r.runner,"Wózek biegowy")}
+      </ul>
+      <p class="why">${esc(r.why[0])}</p>
+      <details class="more"><summary>Więcej i wskazówka od nas</summary>
+        ${r.why.slice(1).map(t=>`<p class="why">${esc(t)}</p>`).join("")}
+        <p class="tip"><b>Wskazówka od lokalsów</b>${esc(r.tip)}</p>
+        <div class="thumbs">${p.slice(1).map(src=>`<img src="${src}" alt="" loading="lazy">`).join("")}</div>
+      </details>
+      <div class="actions">
+        ${map?`<a class="btn" href="${map}" target="_blank" rel="noopener">Mapa w Komoot ↗</a>`:`<span class="btn ghost">Mapa wkrótce</span>`}
+        <button class="btn primary ${inPlan?"added":""}" data-add="${r.id}" type="button">${inPlan?"✓ W planie":"+ Do planu"}</button>
+      </div>
+    </div>
+  </article>`;
+}
+function renderGrid(){
+  const list = ROUTES.filter(matches);
+  document.getElementById("grid").innerHTML = list.length ? list.map(card).join("") : `<div class="empty">Żadna trasa nie spełnia wszystkich warunków. Spróbuj odznaczyć któryś filtr.</div>`;
+  document.getElementById("resCount").textContent = `${list.length} z ${ROUTES.length} tras`;
+  const t = state.type==="bike"?"Trasy rowerowe":state.type==="nw"?"Trasy Nordic Walking":"Wszystkie trasy";
+  document.getElementById("resTitle").textContent = t;
+}
+function kmFmt(n){return (Math.round(n*10)/10).toString().replace(".",",");}
+function minFmt(m){const h=Math.floor(m/60),mm=m%60;return h?`${h} h${mm?` ${mm} min`:""}`:`${mm} min`;}
+function renderPlan(){
+  const daysSel=document.getElementById("days");
+  daysSel.innerHTML=[1,2,3,4,5,6,7].map(n=>`<option value="${n}" ${n===plan.days?"selected":""}>${n}</option>`).join("");
+  plan.items.forEach(i=>{if(i.day>plan.days)i.day=plan.days;});
+  const body=document.getElementById("planBody");
+  const has=plan.items.length>0;
+  document.getElementById("total").hidden=!has;
+  document.getElementById("planActions").hidden=!has;
+  document.getElementById("fab").textContent = has?`Mój plan · ${plan.items.length}`:"Mój plan";
+  if(!has){body.innerHTML=`<p class="planempty">Dodaj trasy przyciskiem „+ Do planu” i przypisz je do kolejnych dni.</p>`;return;}
+  let html="",tkm=0,tmin=0;
+  for(let d=1;d<=plan.days;d++){
+    const items=plan.items.filter(i=>i.day===d).map(i=>byId(i.id)).filter(Boolean);
+    const km=items.reduce((a,r)=>a+r.km,0), mn=items.reduce((a,r)=>a+r.min,0);
+    tkm+=km;tmin+=mn;
+    html+=`<div class="day"><div class="dayhead"><h4>Dzień ${d}</h4><span>${items.length?`${kmFmt(km)} km · ok. ${minFmt(mn)}`:""}</span></div>`;
+    html+= items.length? items.map(r=>`<div class="pitem"><span class="nm">${esc(r.name)}<small>${r.type==="bike"?"Rower":"Nordic Walking"} · ${kmFmt(r.km)} km</small></span>
+      <select aria-label="Dzień dla: ${esc(r.name)}" data-day="${r.id}">${Array.from({length:plan.days},(_,k)=>`<option value="${k+1}" ${k+1===d?"selected":""}>Dz. ${k+1}</option>`).join("")}</select>
+      <button class="x" data-rm="${r.id}" aria-label="Usuń ${esc(r.name)}" type="button">×</button></div>`).join("") : `<p class="dayempty">Dzień wolny od tras.</p>`;
+    html+=`</div>`;
+  }
+  body.innerHTML=html;
+  document.getElementById("total").innerHTML=`<span>Razem ${plan.items.length} ${plan.items.length===1?"trasa":plan.items.length<5?"trasy":"tras"}</span><b>${kmFmt(tkm)} km · ok. ${minFmt(tmin)}</b>`;
+}
+function planText(){
+  let out="Mój plan tras (rower i Nordic Walking)\n";
+  for(let d=1;d<=plan.days;d++){
+    const items=plan.items.filter(i=>i.day===d).map(i=>byId(i.id)).filter(Boolean);
+    if(!items.length) continue;
+    out+=`\nDzień ${d}\n`;
+    items.forEach(r=>{out+=`- ${r.name} (${r.type==="bike"?"rower":"Nordic Walking"}, ${kmFmt(r.km)} km, ${r.time})${KOMOOT(r.map)?"\n  Mapa: "+KOMOOT(r.map):""}\n`;});
+  }
+  return out;
+}
+function status(msg){const s=document.getElementById("status");s.textContent=msg;clearTimeout(status.t);status.t=setTimeout(()=>s.textContent="",3000);}
+function toggle(id){
+  const i=plan.items.findIndex(x=>x.id===id);
+  if(i>=0){plan.items.splice(i,1);status("Usunięto z planu.");}
+  else{
+    const counts=Array.from({length:plan.days},(_,k)=>plan.items.filter(x=>x.day===k+1).length);
+    const day=counts.indexOf(Math.min(...counts))+1;
+    plan.items.push({id,day});status(`Dodano do dnia ${day}.`);
+  }
+  save();renderGrid();renderPlan();
+}
+document.addEventListener("click",e=>{
+  const c=e.target.closest(".chip");
+  if(c){
+    if(c.dataset.f){state[c.dataset.f]=c.dataset.v;document.querySelectorAll(`.chip[data-f="${c.dataset.f}"]`).forEach(b=>b.setAttribute("aria-pressed",b===c));}
+    else if(c.dataset.t){state[c.dataset.t]=!state[c.dataset.t];c.setAttribute("aria-pressed",state[c.dataset.t]);}
+    renderGrid();return;
+  }
+  const a=e.target.closest("[data-add]"); if(a){toggle(a.dataset.add);return;}
+  const r=e.target.closest("[data-rm]"); if(r){toggle(r.dataset.rm);return;}
+});
+document.getElementById("f-reset").addEventListener("click",()=>{
+  Object.assign(state,{type:"all",zone:"all",diff:"all",kids:false,gondola:false,runner:false,food:false});
+  document.querySelectorAll(".chip").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v==="all"));
+  renderGrid();
+});
+document.addEventListener("change",e=>{
+  if(e.target.id==="days"){plan.days=+e.target.value;save();renderPlan();}
+  if(e.target.dataset.day){const it=plan.items.find(x=>x.id===e.target.dataset.day);if(it){it.day=+e.target.value;save();renderPlan();}}
+});
+document.getElementById("clearPlan").addEventListener("click",()=>{plan.items=[];save();renderGrid();renderPlan();status("Plan wyczyszczony.");});
+document.getElementById("copyPlan").addEventListener("click",()=>{
+  const txt=planText(), fb=document.getElementById("copyfallback");
+  const fallback=()=>{fb.hidden=false;fb.value=txt;fb.focus();fb.select();status("Zaznaczyliśmy plan poniżej. Skopiuj go skrótem Ctrl+C / Cmd+C.");};
+  try{navigator.clipboard.writeText(txt).then(()=>{fb.hidden=true;status("Plan skopiowany. Wklej go do wiadomości lub notatek.");},fallback);}catch(err){fallback();}
+});
+document.getElementById("fab").addEventListener("click",()=>document.getElementById("plan").scrollIntoView({behavior:"smooth"}));
+document.getElementById("nBike").textContent=ROUTES.filter(r=>r.type==="bike").length;
+document.getElementById("nNw").textContent=ROUTES.filter(r=>r.type==="nw").length;
+document.getElementById("nAll").textContent=ROUTES.length;
+renderGrid();renderPlan();
+</script>
+
+</body>
+</html>
