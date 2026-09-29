@@ -87,7 +87,9 @@ details.more[open] summary{margin-bottom:8px}
 .tip b{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--heather);margin-bottom:2px}
 .thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
 .thumbs img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block}
-.actions{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto;padding-top:4px}
+.actions .btn{min-width:120px}
+.mapall{display:inline-flex;margin-top:14px;flex:none}
 .btn{appearance:none;border:1px solid var(--pine);background:transparent;color:var(--pine);font:600 14px var(--sans);padding:10px 12px;border-radius:9px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px;flex:1;text-align:center}
 .btn.primary{background:var(--pine);color:var(--bg)}
 .btn.primary.added{background:var(--surface-2);color:var(--pine);border-color:var(--surface-2)}
@@ -140,6 +142,7 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:v
       <div class="eyebrow">Rowerownia · poziom −1</div>
       <h1>Rowerem i z kijkami <em>po Kaszubskim wybrzeżu</em></h1>
       <p class="lede"><span id="nAll">16</span> sprawdzonych tras z naszego przewodnika. Rowery i kije do Nordic Walking zabierzesz z <b>rowerowni na poziomie −1</b>, zaraz obok hali garażowej. Wybierz, co pasuje do Twojej ekipy, i ułóż plan na każdy dzień urlopu.</p>
+      <a class="btn primary mapall" id="mapAll" href="#" target="_blank" rel="noopener" hidden>Wszystkie trasy na mapie Google ↗</a>
     </div>
     <div class="counts" aria-label="Liczba tras">
       <div class="count"><strong id="nBike">–</strong><span>tras rowerowych</span></div>
@@ -196,19 +199,19 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:v
       <textarea id="copyfallback" hidden readonly aria-label="Plan do skopiowania"></textarea>
     </aside>
   </div>
-  <footer>Czasy przejścia i przejazdu to średnie w jedną stronę. Mapy tras w aplikacji Komoot pokazują dokładny przebieg, dystans i przewyższenia.</footer>
+  <footer>Dystanse zmierzyliśmy na śladach tras, a czasy są orientacyjne. Przycisk „Nawiguj” otwiera Mapy Google i prowadzi przez kilka punktów trasy, dlatego na leśnych ścieżkach Google może wybrać nieco inny wariant. Dokładny przebieg każdej trasy pokazuje mapa wszystkich tras.</footer>
 </div>
 <button class="fab" id="fab" type="button">Mój plan</button>
 
 <script src="trasy.js"></script>
 <script>
-// Dane tras są w pliku trasy.js – tam edytuj treść.
+// Treść tras pochodzi z TRASY (plik trasy.js). ZDJECIA jest ustawione tylko w wersji jednoplikowej.
+const IMG = f => (typeof ZDJECIA!=="undefined" && ZDJECIA[f]) ? ZDJECIA[f] : "zdjecia/"+f;
 const DMAP={latwa:1,srednia:2,trudna:3};
 const ROUTES = TRASY.map(t=>({id:t.id,type:t.typ==="rower"?"bike":"nw",zone:t.gdzie==="blisko"?"near":"far",name:t.nazwa,
-  diffs:t.trudnosc.map(d=>DMAP[d]),km:+t.km,time:t.czas,min:+t.minuty,gondola:t.gondola,gondolaNote:t.gondolaUwagi,
-  runner:t.wozekBiegowy,kids:t.dzieci,kidsAge:t.dzieciOdLat,food:t.jedzenie,why:t.opis,tip:t.wskazowka,map:t.mapa,
-  photos:t.zdjecia.map(f=>"zdjecia/"+f)}));
-const KOMOOT = u => u || null;
+  diffs:t.trudnosc.map(d=>DMAP[d]),km:+t.km,min:+t.minuty,loop:!!t.petla,gondola:t.gondola,gondolaNote:t.gondolaUwagi,
+  runner:t.wozekBiegowy,kids:t.dzieci,kidsAge:t.dzieciOdLat,food:t.jedzenie,why:t.opis,tip:t.wskazowka,
+  nav:t.nawigacja||"",drive:t.dojazd||"",photos:t.zdjecia.map(IMG)}));
 const DIFF = {1:"Łatwa",2:"Średnia",3:"Trudna"};
 const state = {type:"all",zone:"all",diff:"all",kids:false,gondola:false,runner:false,food:false};
 let plan = {days:3, items:[]};
@@ -227,32 +230,32 @@ function matches(r){
   if(state.food && !r.food) return false;
   return true;
 }
-function fact(ok,label,note){return `<li class="${ok?"yes":"no"}">${esc(label)}${note?` <small>(${esc(note)})</small>`:""}</li>`;}
+function fact(ok,label,note){if(ok===null||ok===undefined)return "";return `<li class="${ok?"yes":"no"}">${esc(label)}${note?` <small>(${esc(note)})</small>`:""}</li>`;}
 function card(r){
   const inPlan = plan.items.some(i=>i.id===r.id);
   const p = r.photos;
-  const map = KOMOOT(r.map);
   const zoneLbl = r.type==="bike" ? (r.zone==="near"?"Rower · do 10 km":"Rower · do 50 km") : (r.zone==="near"?"Nordic Walking · na miejscu":"Nordic Walking · z dojazdem");
   const d = r.diffs.map(x=>`<span class="diff d${x}">${DIFF[x]}</span>`).join("");
   return `<article class="card">
     <div class="photo"><img src="${p[0]}" alt="${esc(r.name)}" loading="lazy"><span class="tag">${zoneLbl}</span></div>
     <div class="body">
       <h3>${esc(r.name)}</h3>
-      <div class="stats">${d}<span class="stat"><b>${String(r.km).replace(".",",")} km</b></span><span class="stat">· ${esc(r.time)}</span></div>
-      <ul class="facts">
+      <div class="stats">${d}<span class="stat"><b>${String(r.km).replace(".",",")} km</b></span><span class="stat">· ok. ${minFmt(r.min)}</span><span class="stat">· ${r.loop?"pętla":"w jedną stronę"}</span></div>
+      <ul class="facts" ${[r.kids,r.food,r.gondola,r.runner].every(v=>v===null||v===undefined)?"hidden":""}>
         ${fact(r.kids, r.kidsAge?`Dzieci od ${r.kidsAge} lat`:"Dla dzieci")}
         ${fact(r.food,"Jedzenie na trasie")}
         ${fact(r.gondola,"Wózek gondola",r.gondolaNote)}
         ${fact(r.runner,"Wózek biegowy")}
       </ul>
       <p class="why">${esc(r.why[0])}</p>
-      <details class="more"><summary>Więcej i wskazówka od nas</summary>
+      <details class="more" ${(r.why.length>1||r.tip||p.length>1)?"":"hidden"}><summary>Więcej i wskazówka od nas</summary>
         ${r.why.slice(1).map(t=>`<p class="why">${esc(t)}</p>`).join("")}
-        <p class="tip"><b>Wskazówka od lokalsów</b>${esc(r.tip)}</p>
+        ${r.tip?`<p class="tip"><b>Wskazówka od lokalsów</b>${esc(r.tip)}</p>`:""}
         <div class="thumbs">${p.slice(1).map(src=>`<img src="${src}" alt="" loading="lazy">`).join("")}</div>
       </details>
       <div class="actions">
-        ${map?`<a class="btn" href="${map}" target="_blank" rel="noopener">Mapa w Komoot ↗</a>`:`<span class="btn ghost">Mapa wkrótce</span>`}
+        ${r.nav?`<a class="btn" href="${esc(r.nav)}" target="_blank" rel="noopener">Nawiguj ↗</a>`:`<span class="btn ghost">Mapa wkrótce</span>`}
+        ${r.drive?`<a class="btn" href="${esc(r.drive)}" target="_blank" rel="noopener">Dojazd autem ↗</a>`:""}
         <button class="btn primary ${inPlan?"added":""}" data-add="${r.id}" type="button">${inPlan?"✓ W planie":"+ Do planu"}</button>
       </div>
     </div>
@@ -297,7 +300,7 @@ function planText(){
     const items=plan.items.filter(i=>i.day===d).map(i=>byId(i.id)).filter(Boolean);
     if(!items.length) continue;
     out+=`\nDzień ${d}\n`;
-    items.forEach(r=>{out+=`- ${r.name} (${r.type==="bike"?"rower":"Nordic Walking"}, ${kmFmt(r.km)} km, ${r.time})${KOMOOT(r.map)?"\n  Mapa: "+KOMOOT(r.map):""}\n`;});
+    items.forEach(r=>{out+=`- ${r.name} (${r.type==="bike"?"rower":"Nordic Walking"}, ${kmFmt(r.km)} km, ok. ${minFmt(r.min)})${r.nav?"\n  Nawigacja: "+r.nav:""}${r.drive?"\n  Dojazd: "+r.drive:""}\n`;});
   }
   return out;
 }
@@ -341,6 +344,7 @@ document.getElementById("fab").addEventListener("click",()=>document.getElementB
 document.getElementById("nBike").textContent=ROUTES.filter(r=>r.type==="bike").length;
 document.getElementById("nNw").textContent=ROUTES.filter(r=>r.type==="nw").length;
 document.getElementById("nAll").textContent=ROUTES.length;
+if(typeof MAPA_WSZYSTKICH_TRAS!=="undefined" && MAPA_WSZYSTKICH_TRAS){const a=document.getElementById("mapAll");a.href=MAPA_WSZYSTKICH_TRAS;a.hidden=false;}
 renderGrid();renderPlan();
 </script>
 
