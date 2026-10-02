@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Planer tras Rower &amp; Nordic Walking - Apartamenty Pilice</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-trasy">
+
+<nav class="top-nav">
+    <ul>
+        <li><a href="index.html#info"><i class="fa-solid fa-circle-info"></i> Info</a></li>
+        <li><a href="index.html#rekreacja">Atrakcje</a></li>
+        <li><a href="trasy.html" aria-current="page">Trasy</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+        <li class="nav-lang-item">
+            <span class="lang-flag" id="lang-flag" aria-hidden="true"><svg viewBox="0 0 16 10" preserveAspectRatio="none"><rect width="16" height="5" fill="#fff"/><rect y="5" width="16" height="5" fill="#DC143C"/></svg></span>
+            <select id="language-selector" aria-label="Język">
+                <option value="trasy.html" selected>PL</option>
+                <option value="index_en.html">EN</option>
+                <option value="index_de.html">DE</option>
+            </select>
+        </li>
+    </ul>
+</nav>
+
+<header class="hero"></header>
+
+<main class="container">
+
+  <section class="card intro">
+    <div>
+      <p class="intro-place"><i class="fa-solid fa-bicycle"></i> Rowerownia · poziom −1</p>
+      <h1>Rowerem i z kijkami <em>po Kaszubskim wybrzeżu</em></h1>
+      <p class="lede"><span id="nAll">16</span> sprawdzonych tras z naszego przewodnika. Rowery i kije do Nordic Walking zabierzesz z <b>rowerowni na poziomie −1</b>, zaraz obok hali garażowej. Wybierz, co pasuje do Twojej ekipy, i ułóż plan na każdy dzień urlopu.</p>
+      <a class="btn mapall" id="mapAll" href="#" target="_blank" rel="noopener" hidden><i class="fa-solid fa-map-location-dot"></i> Wszystkie trasy na mapie Google</a>
+    </div>
+    <div class="counts" aria-label="Liczba tras">
+      <div class="count"><strong id="nBike">–</strong><span>tras rowerowych</span></div>
+      <div class="count"><strong id="nNw">–</strong><span>tras z kijkami</span></div>
+    </div>
+  </section>
+
+  <section class="card filters" aria-label="Filtry">
+    <div class="frow" role="group" aria-label="Aktywność"><span class="flabel">Aktywność</span>
+      <button class="chip" id="f-type-all" data-f="type" data-v="all" aria-pressed="true">Wszystkie</button>
+      <button class="chip" id="f-type-bike" data-f="type" data-v="bike" aria-pressed="false">Rower</button>
+      <button class="chip" id="f-type-nw" data-f="type" data-v="nw" aria-pressed="false">Nordic Walking</button>
+    </div>
+    <div class="frow" role="group" aria-label="Odległość"><span class="flabel">Gdzie</span>
+      <button class="chip" id="f-zone-all" data-f="zone" data-v="all" aria-pressed="true">Obojętnie</button>
+      <button class="chip" id="f-zone-near" data-f="zone" data-v="near" aria-pressed="false">Blisko hotelu</button>
+      <button class="chip" id="f-zone-far" data-f="zone" data-v="far" aria-pressed="false">Dalej / z dojazdem</button>
+    </div>
+    <div class="frow" role="group" aria-label="Poziom trudności"><span class="flabel">Trudność</span>
+      <button class="chip" id="f-diff-all" data-f="diff" data-v="all" aria-pressed="true">Każda</button>
+      <button class="chip" id="f-diff-1" data-f="diff" data-v="1" aria-pressed="false">Łatwa</button>
+      <button class="chip" id="f-diff-2" data-f="diff" data-v="2" aria-pressed="false">Średnia</button>
+      <button class="chip" id="f-diff-3" data-f="diff" data-v="3" aria-pressed="false">Trudna</button>
+    </div>
+    <div class="frow" role="group" aria-label="Z kim"><span class="flabel">Potrzebuję</span>
+      <button class="chip" id="f-kids" data-t="kids" aria-pressed="false">Dla dzieci</button>
+      <button class="chip" id="f-gondola" data-t="gondola" aria-pressed="false">Wózek gondola</button>
+      <button class="chip" id="f-runner" data-t="runner" aria-pressed="false">Wózek biegowy / rowerowy</button>
+      <button class="chip" id="f-food" data-t="food" aria-pressed="false">Jedzenie na trasie</button>
+      <button class="reset" id="f-reset" type="button">Wyczyść filtry</button>
+    </div>
+  </section>
+
+  <div class="layout">
+    <div>
+      <div class="resultbar"><h2 id="resTitle">Wszystkie trasy</h2><p id="resCount"></p></div>
+      <div class="grid" id="grid"></div>
+    </div>
+    <aside class="card plan" id="plan" aria-label="Mój plan">
+      <div>
+        <h2><i class="fa-solid fa-route"></i> Mój plan</h2>
+        <p class="sub">Zapisuje się w tej przeglądarce.</p>
+      </div>
+      <label class="stay" for="days">Liczba dni aktywności
+        <select id="days"></select>
+      </label>
+      <div id="planBody"></div>
+      <div class="total" id="total" hidden></div>
+      <div class="planactions" id="planActions" hidden>
+        <button class="btn" id="copyPlan" type="button"><i class="fa-regular fa-copy"></i> Kopiuj plan</button>
+        <button class="btn btn-outline" id="clearPlan" type="button">Wyczyść</button>
+      </div>
+      <p class="status" id="status" role="status"></p>
+      <textarea id="copyfallback" hidden readonly aria-label="Plan do skopiowania"></textarea>
+    </aside>
+  </div>
+
+  <p class="note">Dystanse zmierzyliśmy na śladach tras, a czasy są orientacyjne. Przycisk „Nawiguj” otwiera Mapy Google i prowadzi przez kilka punktów trasy, dlatego na leśnych ścieżkach Google może wybrać nieco inny wariant. Dokładny przebieg każdej trasy pokazuje mapa wszystkich tras.</p>
+</main>
+
+<footer class="footer-main">
+    <div class="footer-container">
+        <div class="footer-section">
+            <p><i class="fa-regular fa-clock"></i> Załoga Pilic (8:00 - 20:00)</p>
+            <a href="tel:+48728833477" class="btn">
+                <i class="fa-solid fa-phone"></i> +48 728 833 477
+            </a>
+        </div>
+        <div class="footer-section">
+            <p><i class="fa-solid fa-triangle-exclamation"></i> Telefon awaryjny</p>
+            <a href="tel:+48798752989" class="btn">
+                <i class="fa-solid fa-phone"></i> +48 798 752 989
+            </a>
+        </div>
+    </div>
+</footer>
+
+<div class="footer-secondary">
+    <div class="footer-links-container">
+        <a href="https://g.page/r/CXRovuStNT1yEBM/review" target="_blank" rel="noopener" class="btn">
+            <i class="fa-brands fa-google"></i> Oceń nas
+        </a>
+        <a href="https://www.apartamenty-pilice.pl/blog" target="_blank" rel="noopener" class="btn btn-outline-light">
+            <i class="fa-solid fa-blog"></i> Blog
+        </a>
+    </div>
+</div>
+
+<button class="fab" id="fab" type="button">Mój plan</button>
+
+<div class="ig-floating-container">
+    <div class="ig-popup">Pokaż jak świetnie bawisz się w JG i oznacz nas na IG!</div>
+    <a href="https://www.instagram.com/apartamentypilice/" target="_blank" rel="noopener" class="ig-btn" aria-label="Instagram">
+        <i class="fa-brands fa-instagram"></i>
+    </a>
+</div>
+
+<script src="trasy.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
