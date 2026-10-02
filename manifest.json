@@ -1,0 +1,22 @@
+{
+  "short_name": "Pilice Guide",
+  "name": "Apartamenty Pilice - Przewodnik Gościa",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "index.html",
+  "background_color": "#f4f1ea",
+  "display": "standalone",
+  "scope": "./",
+  "theme_color": "#1a5a96",
+  "description": "Cyfrowy przewodnik dla gości Apartamenty Pilice"
+}
