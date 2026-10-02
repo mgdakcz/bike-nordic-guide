@@ -1,6 +1,6 @@
 /* ==========================================================
    Apartamenty Pilice – wspólny arkusz stylów
-   Used by: index.html, index_en.html, index_de.html, trasy.html
+   Used by: index.html, index_en.html, index_de.html, trasy/index.html
 
    1. Colours & base
    2. Navigation + language selector
@@ -11,7 +11,7 @@
    7. FAQ
    8. Footer
    9. Instagram button
-   10. Route planner (trasy.html only, scoped to .page-trasy)
+   10. Route planner (trasy/index.html only, scoped to .page-trasy)
    11. Responsive
    ========================================================== */
 
@@ -435,7 +435,7 @@ details.faq-item p {
 }
 
 
-/* ---------- 10. Route planner (trasy.html) ---------- */
+/* ---------- 10. Route planner (trasy/index.html) ---------- */
 .page-trasy *,
 .page-trasy *::before,
 .page-trasy *::after { box-sizing: border-box; }

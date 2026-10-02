@@ -203,9 +203,9 @@ footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:v
 </div>
 <button class="fab" id="fab" type="button">Mój plan</button>
 
-<script src="trasy/trasy.js"></script>
+<script src="trasy/trasy/trasy.js"></script>
 <script>
-// Treść tras pochodzi z TRASY (plik trasy.js). ZDJECIA jest ustawione tylko w wersji jednoplikowej.
+// Treść tras pochodzi z TRASY (plik trasy/trasy.js). ZDJECIA jest ustawione tylko w wersji jednoplikowej.
 const IMG = f => (typeof photos!=="undefined" && photos[f]) ? photos[f] : "photos/"+f;
 const DMAP={latwa:1,srednia:2,trudna:3};
 const ROUTES = TRASY.map(t=>({id:t.id,type:t.typ==="rower"?"bike":"nw",zone:t.gdzie==="blisko"?"near":"far",name:t.nazwa,

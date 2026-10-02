@@ -9,8 +9,8 @@ const ASSETS = [
   '/index.html',
   '/index_en.html',
   '/index_de.html',
-  '/trasy.html',
-  '/trasy.js',
+  '/trasy/index.html',
+  '/trasy/trasy.js',
   '/css/style.css',
   '/js/main.js',
   '/manifest.json'
