@@ -1,5 +1,5 @@
 /* ==========================================================
-TRASY
+
    Pola:
    id         – krótka unikalna nazwa bez spacji i polskich liter
    typ        – "rower" albo "nordic"
