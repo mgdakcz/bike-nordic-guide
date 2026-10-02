@@ -1,8 +1,5 @@
 /* ==========================================================
-   TRASY – tu edytujesz treść planera.
-   Każda trasa to jeden blok { ... }. Aby dodać trasę, skopiuj
-   cały blok (od { do },), wklej pod spodem i zmień wartości.
-
+TRASY
    Pola:
    id         – krótka unikalna nazwa bez spacji i polskich liter
    typ        – "rower" albo "nordic"
@@ -23,7 +20,7 @@
    zdjecia    – lista plików z folderu zdjecia; pierwsze to zdjęcie główne
    ========================================================== */
 
-// Link do wspólnej mapy Google My Maps (przycisk w nagłówku). Wklej go między cudzysłowy.
+// Link do wspólnej mapy Google My Maps (przycisk w nagłówku).
 const MAPA_WSZYSTKICH_TRAS = "https://www.google.com/maps/d/viewer?mid=1xzSdIRzbyXlEwbVQaBLoFFLmO9Zby0c";
 
 const TRASY = [
@@ -362,5 +359,89 @@ const TRASY = [
     nawigacja: "https://www.google.com/maps/dir/?api=1&origin=54.72185,18.41854&destination=54.72250,18.41782&waypoints=54.72286,18.40273|54.72964,18.39335|54.72444,18.40276&travelmode=walking",
     dojazd: "https://www.google.com/maps/dir/?api=1&destination=54.72185,18.41854&travelmode=driving",
     zdjecia: ["puck-1.jpg"],
+  },
+  {
+    id: "bialogora-rowerem", 
+    typ: "rower", 
+    gdzie: "dalej", 
+    nazwa: "Białogóra rowerem",
+    trudnosc: ["trudna", "srednia"], 
+    km: 25,
+    minuty: 100, 
+    petla: false,
+    gondola: false, 
+    gondolaUwagi: "",
+    wozekBiegowy: false, 
+    dzieci: false, 
+    dzieciOdLat: null,
+    jedzenie: true, 
+    opis: ["Długa wycieczka rowerowa na zachód wzdłuż wybrzeża: przez Karwię i Ostrowo do ujścia Czarnej Wody, a dalej przez Dębki do Białogóry.", "Na miejscu czeka szeroka, spokojna plaża z jasnym piaskiem i wydmami – jedna z mniej zatłoczonych w okolicy."], // ?
+    wskazowka: "To trasa w jedną stronę więc zaplanuj siły i czas na powrót tą samą drogą.",
+    nawigacja: "https://www.google.com/maps/dir/Apartamenty+Pilice,+Obro%C5%84c%C3%B3w+Westerplatte+1,+84-104+Jastrz%C4%99bia+G%C3%B3ra/Black+Water+Mouth,+Ostrowo/Bia%C5%82og%C3%B3ra+Beach,+Bia%C5%82og%C3%B3ra/@54.8278459,18.0054018,12z/data=!4m20!4m19!1m5!1m1!1s0x46fc4b25f61af6b7:0x723d35ade4be6874!2m2!1d18.3013622!2d54.8320816!1m5!1m1!1s0x46fc35aa3f53858f:0xc79998016a8553a6!2m2!1d18.2356206!2d54.8331365!1m5!1m1!1s0x46fdcdbaa0c9e783:0x9badbcaddf772e76!2m2!1d17.9546199!2d54.8293909!3e1?entry=ttu&g_ep=EgoyMDI2MDkyOC4wIKXMDSoASAFQAw%3D%3D",
+    dojazd: "",
+    zdjecia: [""],
+  },
+  {
+    id: "nadole-jezioro-zarnowieckie", 
+    typ: "rower", 
+    gdzie: "dalej", 
+    nazwa: "Nadole i jezioro Żarnowieckie",
+    trudnosc: ["srednia", "trudna"],
+    km: 27, 
+    minuty: 110, 
+    petla: false,
+    gondola: false, 
+    gondolaUwagi: "",
+    wozekBiegowy: false, 
+    dzieci: false, //
+    dzieciOdLat: null,
+    jedzenie: true, 
+    opis: ["Trasa prowadzi przez Krokową, gdzie warto zatrzymać się przy zamku, a następnie nad Jezioro Żarnowieckie.", "Celem jest wieża widokowa „Kaszubskie Oko” w Gniewinie z panoramą jeziora i okolicy. W Nadolu nad jeziorem znajduje się skansen."],
+    wskazowka: "Końcówka do Gniewina to wyraźny podjazd. Zostaw siły na ostatnie kilometry.",
+    nawigacja: "https://www.google.com/maps/dir/Apartamenty+Pilice,+Obro%C5%84c%C3%B3w+Westerplatte+1,+84-104+Jastrz%C4%99bia+G%C3%B3ra/Krokowa+Castle,+Zamkowa+1,+84-110+Krokowa/Lookout+Tower+%22Kashubian+Eye%22,+84-250+Gniewino/@54.7748363,18.0937098,12z/data=!3m1!5s0x46fdca4254c3d031:0xde900d6e1bec656b!4m20!4m19!1m5!1m1!1s0x46fc4b25f61af6b7:0x723d35ade4be6874!2m2!1d18.3013622!2d54.8320816!1m5!1m1!1s0x46fdca4254bce44f:0x942d6cc0c57000e4!2m2!1d18.1639774!2d54.7770511!1m5!1m1!1s0x46fdc8df8ee81a93:0xaaa6d2c80e758935!2m2!1d18.0521597!2d54.7179279!3e1?entry=ttu&g_ep=EgoyMDI2MDkyOC4wIKXMDSoASAFQAw%3D%3D",
+    dojazd: "",
+    zdjecia: [""],
+  },
+  {
+    id: "wejherowo-wodne-ogrody", 
+    typ: "nordic",
+    gdzie: "dalej",
+    nazwa: "Wejherowo i Wodne Ogrody",
+    trudnosc: ["srednia", "trudna"], 
+    km: 7.5,
+    minuty: 120,
+    petla: true, 
+    gondola: false, 
+    gondolaUwagi: "",
+    wozekBiegowy: false, 
+    dzieci: true, 
+    dzieciOdLat: null,
+    jedzenie: true, 
+    opis: ["Spacer zaczyna się przy Wodnych Ogrodach w Wejherowie (ul. Kalwaryjska 12).", "Kolejne punkty na trasie prowadzą przez duży park miejski oraz Dolinę Cedronu.", "Trasa biegnie w okolicy Kalwarii Wejherowskiej."], 
+    wskazowka: "Wodne Ogrody to park wodny. Poza sezonem działa tylko w piątki, soboty i niedziele.",
+    nawigacja: "https://maps.app.goo.gl/YJgsP2XqyRzRoRwdA",
+    dojazd: "https://www.google.com/maps/dir/Apartamenty+Pilice,+Obro%C5%84c%C3%B3w+Westerplatte+1,+84-104+Jastrz%C4%99bia+G%C3%B3ra/Wodne+Ogrody,+Kalwaryjska+12,+84-200+Wejherowo/@54.6013357,18.2304222,16z/data=!3m1!5s0x46fdca4254c3d031:0xde900d6e1bec656b!4m15!4m14!1m5!1m1!1s0x46fc4b25f61af6b7:0x723d35ade4be6874!2m2!1d18.3013622!2d54.8320816!1m5!1m1!1s0x46fdbb41bb0da541:0x12de905167706049!2m2!1d18.2271897!2d54.5980973!3e0!5i1?entry=ttu&g_ep=EgoyMDI2MDkyOC4wIKXMDSoASAFQAw%3D%3D",
+    zdjecia: [""],
+  },
+  {
+    id: "cypel-rewski", 
+    typ: "nordic",
+    gdzie: "dalej",
+    nazwa: "Cypel Rewski",
+    trudnosc: ["latwa"],
+    km: 2.2, 
+    minuty: 30, 
+    petla: false,
+    gondola: true, 
+    gondolaUwagi: "Rewa jest popularną miejscówką w sezonie letnim, ale poza sezonem panuje tu raczej cisza i spokój.",
+    wozekBiegowy: true, 
+    dzieci: true, 
+    dzieciOdLat: null,
+    jedzenie: true, 
+    opis: ["Krótki spacer na Cypel Rewski czyli piaszczysty język lądu wcinający się w Zatokę Pucką.", "Z końca cypla rozciąga się widok na zatokę i Półwysep Helski."],
+    wskazowka: "Ostatni odcinek prowadzi po piasku, a na cyplu zwykle mocno wieje, jak to na cyplu :)",
+    nawigacja: "https://www.google.com/maps/dir/54.6309778,18.493056/Cypel+Rewski,+81-198+Rewa/@54.6359576,18.4994278,16z/data=!3m2!4b1!5s0x46fdca4254c3d031:0xde900d6e1bec656b!4m9!4m8!1m0!1m5!1m1!1s0x46fdaf25a35054ab:0x42627197fb9490cc!2m2!1d18.5160992!2d54.6409132!3e2?entry=ttu&g_ep=EgoyMDI2MDkyOC4wIKXMDSoASAFQAw%3D%3D",
+    dojazd: "https://www.google.com/maps/dir/Apartamenty+Pilice,+Obro%C5%84c%C3%B3w+Westerplatte+1,+84-104+Jastrz%C4%99bia+G%C3%B3ra/54.6309778,18.493056/@54.6292532,18.4891642,17z/data=!3m1!5s0x46fdca4254c3d031:0xde900d6e1bec656b!4m9!4m8!1m5!1m1!1s0x46fc4b25f61af6b7:0x723d35ade4be6874!2m2!1d18.3013622!2d54.8320816!1m0!3e0?entry=ttu&g_ep=EgoyMDI2MDkyOC4wIKXMDSoASAFQAw%3D%3D",
+    zdjecia: [""],
   },
 ];
